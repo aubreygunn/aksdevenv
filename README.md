@@ -7,8 +7,7 @@ This repository serves as a boilerplate for the scenario described above, and fu
 
 ## Architecture
 
-[Architecture Diagram AKS deployment]
-Todo
+![Architecture Diagram AKS deployment](images/archdiagram_k8s.png?raw=true "Architecture Diagram AKS deployment")
 
 The architecture consists of the following components:
 
