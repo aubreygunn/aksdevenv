@@ -4,6 +4,36 @@ Setting up an Azure Kubernetes Service (AKS) using terraform, is fairly easy. Se
 
 This repository serves as a boilerplate for the scenario described above, and fully deploys and configures your Azure Kubernetes Service in the cloud using a single terraform deployment.
 
+
+# Deployment steps for VMLYR azure 
+
+Log in  steps 
+
+1. you will want to make sure you are logged into VMLYR azure. 
+` az login `
+Setting your subscription is an optional step, but this allows you to set your account to VMLY&R North America for this deployment. 
+`az account set --subscription "VMLYR North America" `
+
+2. you will need to log into the Azure Container Registry 
+`az acr login --name acrvmlyrswgc`
+
+3. Tagging your docker container steps and pushing container to Azure. 
+You are going to want to tag your docker container . Don't forget to update 'youcontainer' to your actual container name. 
+`docker tag yourcontainer acrvmlyrswgc.azurecr.io/yourcontainer`
+
+after you tag your container you will push the container to the azure container registry.  
+`docker push acrvmlyrswgc.azurecr.io/mymicroservice:v2`
+
+4. deployment steps to AKS
+After your Container is pushed to the ACR you will want to deploy to AKS 
+run the following commands
+`az aks get-credentials -g rg-vmlyrswgc -n aks-vmlyrswgc`
+
+`kubectl apply -f devdeploy.yaml`
+
+5. Confirm the that the pods are running. 
+`kubectl get pods`
+
 ## Architecture
 
 ![Architecture Diagram AKS deployment](images/archdiagram_k8s.png?raw=true "Architecture Diagram AKS deployment")

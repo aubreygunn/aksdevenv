@@ -5,6 +5,6 @@ metadata:
 spec:
   containers:
       - name: mymicroservice
-        image: acrvmlyrswgc.azurecr.io/mymicroservice:v1
+        image: acrvmlyrswgc.azurecr.io/mymicroservice:v2
         ports:
         - containerPort: 3000
