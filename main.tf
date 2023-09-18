@@ -1,17 +1,9 @@
-# Create a resource group for this deployment
-module "resource_group" {
-  source = "./modules/resource_group"
-
-  location = var.location
-  name     = "rg-${var.app_name}"
-}
-
 module "storage" {
   source = "./modules/storage"
 
   name                = "st${var.app_name}"
   ctname              = "stct${var.app_name}"
-  resource_group_name = module.resource_group.name
+  resource_group_name = data.azurerm_resource_group.rgvmlyrswgc.name
   location            = var.location
 }
 
@@ -19,7 +11,7 @@ module "redis_cache" {
   source = "./modules/cache"
 
   name                = "st-${var.app_name}"
-  resource_group_name = module.resource_group.name
+  resource_group_name = data.azurerm_resource_group.rgvmlyrswgc.name
   location            = var.location
 }
 
@@ -29,7 +21,7 @@ module "keyvault" {
 
   name                = "kv-${var.app_name}"
   location            = var.location
-  resource_group_name = module.resource_group.name
+  resource_group_name = data.azurerm_resource_group.rgvmlyrswgc.name
 
   # Config
   enabled_for_deployment          = "true"
@@ -42,7 +34,7 @@ module "acr" {
   source = "./modules/acr"
 
   name                = "acr${var.app_name}"
-  resource_group_name = module.resource_group.name
+  resource_group_name = data.azurerm_resource_group.rgvmlyrswgc.name
   location            = var.location
 }
 
@@ -72,7 +64,7 @@ module "vnet" {
   source = "./modules/vnet"
 
   name                = "vnet-${var.app_name}"
-  resource_group_name = module.resource_group.name
+  resource_group_name = data.azurerm_resource_group.rgvmlyrswgc.name
   location            = var.location
 }
 
@@ -81,7 +73,7 @@ module "log_analytics" {
   source = "./modules/log_analytics"
 
   app_name            = var.app_name
-  resource_group_name = module.resource_group.name
+  resource_group_name = data.azurerm_resource_group.rgvmlyrswgc.name
   location            = var.location
 }
 
@@ -89,7 +81,7 @@ module "log_analytics" {
 module "aks" {
   source = "./modules/aks"
 
-  resource_group_name  = module.resource_group.name
+  resource_group_name  = data.azurerm_resource_group.rgvmlyrswgc.name
   app_name             = var.app_name
   location             = var.location
   virtual_network_name = module.vnet.name
@@ -115,7 +107,7 @@ module "aks" {
 module "appgw" {
   source = "./modules/appgw"
 
-  resource_group       = { "name" : module.resource_group.name, "id" : module.resource_group.id }
+  resource_group       = { "name" : data.azurerm_resource_group.rgvmlyrswgc.name, "id" : data.azurerm_resource_group.rgvmlyrswgc.id }
   app_name             = var.app_name
   location             = var.location
   virtual_network_name = module.vnet.name
